@@ -2,7 +2,6 @@ import requests
 from api_secrets import API_KEY_ASSEMBLYAI
 import sys
 import os
-import text_localization
 
 def stt():
     upload_endpoint = "https://api.assemblyai.com/v2/upload"
@@ -57,5 +56,3 @@ def stt():
 
     audio_url = upload(filename)
     save_transcript(audio_url)
-
-    text_localization.scan()

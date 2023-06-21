@@ -2,7 +2,6 @@ import pyaudio
 import wave
 import sys
 import os
-import mainstt
 
 def record():
     FRAMES_PER_BUFFER = 3200
@@ -38,5 +37,3 @@ def record():
     obj.setframerate(RATE)
     obj.writeframes(b"".join(frames))
     obj.close
-
-    mainstt.stt()
