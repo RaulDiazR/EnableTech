@@ -4,19 +4,43 @@ import main
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QEvent, QObject
+
 
 def button1_click():
     try:
-        main.start()
+      main.start()
+      label.setText("Saliste del Modo Voz,\nescoga una opción")
     except KeyboardInterrupt:
-        print("Saliste del Modo")
+        print("Saliste del Modo Voz")
+        label.setText("Saliste del Modo Voz,\nescoga una opción")
+
 
 def button2_click():
-    vision.facial_tracking()
+   vision.facial_tracking()
+   label.setText("Saliste del Modo Visual,\nescoga una opción")
+
 
 def exit_program():
     # Close the application
     app.quit()
+
+
+class ButtonPressFilter(QObject):
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.KeyPress:
+            key = event.key()
+            if key == Qt.Key_1:
+                button1.click()
+                return True
+            elif key == Qt.Key_2:
+                button2.click()
+                return True
+            elif key == Qt.Key_3:
+                exit_button.click()
+                return True 
+        return super().eventFilter(obj, event)
+
 
 # Create the application
 app = QApplication([])
@@ -24,7 +48,7 @@ app = QApplication([])
 # Create a main window
 window = QMainWindow()
 window.setWindowTitle("Software")
-window.setGeometry(100, 100, 300, 250)
+window.setGeometry(100, 100, 300, 310)
 
 # Create buttons
 button1 = QPushButton("Control de Voz y Teclado", window)
@@ -42,7 +66,7 @@ exit_button.clicked.connect(exit_program)
 # Create a label
 label = QLabel("Escoga una de las\n siguientes opciones:", window)
 label.setAlignment(Qt.AlignCenter)
-label.setGeometry(50, 20, 200, 80)
+label.setGeometry(50, 20, 220, 80)
 
 # Set font type and size for the label
 font = QFont("Arial", 14, QFont.Bold)  # Change the font type and size here
@@ -53,7 +77,7 @@ button_style = """
     QPushButton {
         color: white;
         font-size: 14px;
-        border-radius: 5px;
+        border-radius: 30px;
         border: none;
     }
     QPushButton#button1 {
@@ -82,6 +106,10 @@ exit_button.setObjectName("exit_button")
 button1.setStyleSheet(button_style)
 button2.setStyleSheet(button_style)
 exit_button.setStyleSheet(button_style)
+
+# Install the event filter to the application
+button_press_filter = ButtonPressFilter()
+app.installEventFilter(button_press_filter)
 
 # Show the window
 window.show()
