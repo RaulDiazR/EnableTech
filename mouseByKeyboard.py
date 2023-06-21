@@ -24,8 +24,23 @@ def on_press(key):
       # Click izquierdo
       elif key == KeyCode(char='o'):
          mouse.click(Button.left)
+            # tecla izquierda
+      if key == Key.left:
+         mouse.move(-10, 0)
+      # tecla inferior
+      elif key == Key.down:
+         mouse.move(0, 10)
+      # tecla derecha
+      elif key == Key.right:
+         mouse.move(10, 0)
+      # tecla superior
+      elif key == Key.up:
+         mouse.move(0, -10)
+      # Click izquierdo
+      elif key == Key.caps_lock:
+         mouse.click(Button.left)
       # Click derecho     
-      elif key == KeyCode(char='p'):
+      elif key == Key.shift_r:
          mouse.click(Button.right)  
       # Desabilitar Control de Mouse
       elif key == Key.ctrl_r:
