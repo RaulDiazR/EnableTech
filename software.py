@@ -2,6 +2,7 @@ import vision
 import main
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 
 def button1_click():
@@ -25,23 +26,27 @@ window = QMainWindow()
 window.setWindowTitle("Software")
 window.setGeometry(100, 100, 300, 250)
 
-# Create a label
-label = QLabel("Escoga una de las siguientes opciones:", window)
-label.setAlignment(Qt.AlignCenter)
-label.setGeometry(50, 20, 200, 30)
-
 # Create buttons
 button1 = QPushButton("Control de Voz y Teclado", window)
-button1.setGeometry(50, 70, 200, 40)
+button1.setGeometry(50, 120, 200, 40)
 button1.clicked.connect(button1_click)
 
-button2 = QPushButton("Control Ocular", window)
-button2.setGeometry(50, 120, 200, 40)
+button2 = QPushButton("Control Visual", window)
+button2.setGeometry(50, 170, 200, 40)
 button2.clicked.connect(button2_click)
 
 exit_button = QPushButton("Salir", window)
-exit_button.setGeometry(50, 170, 200, 40)
+exit_button.setGeometry(50, 220, 200, 40)
 exit_button.clicked.connect(exit_program)
+
+# Create a label
+label = QLabel("Escoga una de las\n siguientes opciones:", window)
+label.setAlignment(Qt.AlignCenter)
+label.setGeometry(50, 20, 200, 80)
+
+# Set font type and size for the label
+font = QFont("Arial", 14, QFont.Bold)  # Change the font type and size here
+label.setFont(font)
 
 # Set a custom style for the buttons
 button_style = """
@@ -50,7 +55,6 @@ button_style = """
         font-size: 14px;
         border-radius: 5px;
         border: none;
-        padding: 10px 20px;
     }
     QPushButton#button1 {
         background-color: blue;
