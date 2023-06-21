@@ -1,64 +1,60 @@
 import pytesseract as tess
 import cv2
-
 from pytesseract import Output
+import mouseByKeyboard
 
-#indicar path de donde esta instalado pytesseract
-#tess.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-tess.pytesseract.tesseract_cmd = r"/usr/bin/tesseract"
+def scan():
+   #indicar path de donde esta instalado pytesseract
+   #tess.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+   tess.pytesseract.tesseract_cmd = r"/usr/bin/tesseract"
 
-#Load Image and extract the data
-filename = 'screenshot.png'
-image = cv2.imread(filename)
+   #Load Image and extract the data
+   filename = 'screenshot.png'
+   image = cv2.imread(filename)
 
-#Convert image to dictionary
-results = tess.image_to_data(image, output_type=Output.DICT)
+   #Convert image to dictionary
+   results = tess.image_to_data(image, output_type=Output.DICT)
 
-#print dictionary
-print(results)
+   #define cont to read multiple coords
+   cont = 0
 
-#define cont to read multiple coords
-cont = 0
+   with open('output.wav.txt') as f:
+       lines = f.readlines()
 
-with open('output.wav.txt') as f:
-    lines = f.readlines()
+   result = lines[0].split(" ")
+   word = result[0]
 
-result = lines[0].split(" ")
-word = result[0]
+   result = lines[0].split(".")
+   word = result[0]
+   #Extract bounding coordinates
+   for i in range(0, len(results["text"])):
+      x = results["left"][i]
+      y = results["top"][i]
 
-result = lines[0].split(".")
-word = result[0]
-#Extract bounding coordinates
-for i in range(0, len(results["text"])):
-   x = results["left"][i]
-   y = results["top"][i]
+      w = results["width"][i]
+      h = results["height"][i]
 
-   w = results["width"][i]
-   h = results["height"][i]
-
-   text = results["text"][i]
-   conf = int(results["conf"][i])
-
-
-   if conf > 30 and text == word:
-
-       text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
-       cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-       cv2.putText(image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+      text = results["text"][i]
+      conf = int(results["conf"][i])
 
 
+      if conf > 30 and text == "Firefox":
 
-    # Print coordinates of the chosen word
-       print(f"Coordenadas en x({cont}): {x}")
-       print(f"Coordenadas en y({cont}): {y}")
-       print(f"Anchura({cont}): {w}")
-       print(f"Altura({cont}): {h}")
-       cont += 1
-       print("\n")
+          text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
+          cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+          cv2.putText(image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
 
-f.close()
-print(word)
-#Display results
-cv2.imshow("Output", image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+
+
+       # Print coordinates of the chosen word
+          print(f"Coordenadas en x({cont}): {x}")
+          print(f"Coordenadas en y({cont}): {y}")
+          print(f"Anchura({cont}): {w}")
+          print(f"Altura({cont}): {h}")
+          cont += 1
+          print("\n")
+
+   f.close()
+   print(word)
+
+   mouseByKeyboard.coordenates(x, y, w, h)

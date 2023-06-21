@@ -3,9 +3,15 @@ from pynput.keyboard import Listener, KeyCode, Key
 import sys
 import os
 import pyautogui
+import recordvoice
+#from text_localization import x, y, w, h
+
 
 mouse = Controller()
 mouseControl = True
+
+#if x != None:
+ #  mouse.position((x+(w/2)), (y+(h/2)))
 
 def on_press(key):
    global mouseControl
@@ -51,7 +57,7 @@ def on_press(key):
          filename = f"screenshot.png"
          screenshot = pyautogui.screenshot()
          screenshot.save(filename)
-         os.system("python3 recordvoice.py")
+         recordvoice.record()
          
       elif key == Key.esc:
          return False 
@@ -67,3 +73,10 @@ def on_press(key):
 print("Press esc to stop the mouse movement.")
 with Listener(on_press=on_press) as listener:
     listener.join()
+
+def coordenates(x, y, w, h):
+   cx = x
+   cy = y
+   cw = w
+   ch = h
+   on_press()

@@ -2,39 +2,41 @@ import pyaudio
 import wave
 import sys
 import os
+import mainstt
 
-FRAMES_PER_BUFFER = 3200
-FORMAT = pyaudio.paInt16
-CHANNELS = 1
-RATE = 16000
+def record():
+    FRAMES_PER_BUFFER = 3200
+    FORMAT = pyaudio.paInt16
+    CHANNELS = 1
+    RATE = 16000
 
-p = pyaudio.PyAudio()
+    p = pyaudio.PyAudio()
 
-stream = p.open(
-    format=FORMAT,
-    channels=CHANNELS,
-    rate=RATE,
-    input=True,
-    frames_per_buffer=FRAMES_PER_BUFFER
-)
+    stream = p.open(
+        format=FORMAT,
+        channels=CHANNELS,
+        rate=RATE,
+        input=True,
+        frames_per_buffer=FRAMES_PER_BUFFER
+    )
 
-print("start recording")
+    print("start recording")
 
-seconds = 2
-frames = []
-for i in range(0, int(RATE/FRAMES_PER_BUFFER*seconds)):
-    data = stream.read(FRAMES_PER_BUFFER)
-    frames.append(data)
+    seconds = 2
+    frames = []
+    for i in range(0, int(RATE/FRAMES_PER_BUFFER*seconds)):
+        data = stream.read(FRAMES_PER_BUFFER)
+        frames.append(data)
 
-stream.stop_stream()
-stream.close()
-p.terminate()
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
 
-obj = wave.open("output.wav", "wb")
-obj.setnchannels(CHANNELS)
-obj.setsampwidth(p.get_sample_size(FORMAT))
-obj.setframerate(RATE)
-obj.writeframes(b"".join(frames))
-obj.close
+    obj = wave.open("output.wav", "wb")
+    obj.setnchannels(CHANNELS)
+    obj.setsampwidth(p.get_sample_size(FORMAT))
+    obj.setframerate(RATE)
+    obj.writeframes(b"".join(frames))
+    obj.close
 
-os.system("python3 mainstt.py")
+    mainstt.stt()
