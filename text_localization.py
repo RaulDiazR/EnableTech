@@ -25,6 +25,8 @@ def scan():
 
    result = lines[0].split(".")
    word = str(result[0])
+
+   wordlower = word.lower()
    #Extract bounding coordinates
    for i in range(0, len(results["text"])):
       x = results["left"][i]
