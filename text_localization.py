@@ -4,13 +4,11 @@ import cv2
 from pytesseract import Output
 
 #indicar path de donde esta instalado pytesseract
-tess.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
-
-
+#tess.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+tess.pytesseract.tesseract_cmd = r"/usr/bin/tesseract"
 
 #Load Image and extract the data
-filename = 'texto_compu.png'
+filename = 'screenshot.png'
 image = cv2.imread(filename)
 
 #Convert image to dictionary
@@ -22,6 +20,14 @@ print(results)
 #define cont to read multiple coords
 cont = 0
 
+with open('output.wav.txt') as f:
+    lines = f.readlines()
+
+result = lines[0].split(" ")
+word = result[0]
+
+result = lines[0].split(".")
+word = result[0]
 #Extract bounding coordinates
 for i in range(0, len(results["text"])):
    x = results["left"][i]
@@ -33,7 +39,8 @@ for i in range(0, len(results["text"])):
    text = results["text"][i]
    conf = int(results["conf"][i])
 
-   if conf > 30 and text == 'Visual':
+
+   if conf > 30 and text == word:
 
        text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
@@ -49,8 +56,8 @@ for i in range(0, len(results["text"])):
        cont += 1
        print("\n")
 
-
-
+f.close()
+print(word)
 #Display results
 cv2.imshow("Output", image)
 cv2.waitKey(0)

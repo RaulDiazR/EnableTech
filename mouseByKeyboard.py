@@ -1,13 +1,14 @@
 from pynput.mouse import Button, Controller
 from pynput.keyboard import Listener, KeyCode, Key
+import sys
+import os
+import pyautogui
 
 mouse = Controller()
 mouseControl = True
 
 def on_press(key):
    global mouseControl
-   
-   
    if mouseControl:
       # tecla izquierda
       if key == KeyCode(char='a'):
@@ -46,9 +47,15 @@ def on_press(key):
       elif key == Key.ctrl_r:
          mouseControl = not mouseControl
       # Salir del Modo Keyboard Listener
+      elif key == Key.space:
+         filename = f"screenshot.png"
+         screenshot = pyautogui.screenshot()
+         screenshot.save(filename)
+         os.system("python3 recordvoice.py")
+         
       elif key == Key.esc:
          return False 
-         
+      
    # Desabilitar Control de Mouse
    elif key == Key.ctrl_r:
       mouseControl = not mouseControl
