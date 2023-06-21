@@ -46,4 +46,3 @@ def facial_tracking():
 
     camara.release()  # Libera la cámara
     cv2.destroyAllWindows()  # Cierra todas las ventanas de OpenCV
-
