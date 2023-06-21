@@ -1,10 +1,12 @@
+import pytesseract as tess
+import cv2
 
-import pyTesseract as tess
-from pyTesseract import Output
+from pytesseract import Output
 
+#indicar path de donde esta instalado pytesseract
 tess.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
-import cv2
+
 
 
 #Load Image and extract the data
